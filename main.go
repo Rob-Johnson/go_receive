@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"flag"
 	"fmt"
 	"github.com/Rob-Johnson/goreceive/deploy"
 	"io/ioutil"
@@ -61,6 +62,8 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	var port = flag.Int("port", 8080, "Port to listen on")
+	flag.Parse()
 	http.HandleFunc("/", ReceiveHandler)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(fmt.Sprintf(":%d", *port), nil)
 }
