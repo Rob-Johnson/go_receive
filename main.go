@@ -30,19 +30,21 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var body []byte
-	var err error
-	body, err = ioutil.ReadAll(r.Body)
+	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		sendResponse(w, 400, err.Error())
 		return
 	}
 
 	//try and convert the json to a Payload struct
-	var payload Payload
-	err = json.Unmarshal(body, &payload)
+	var load Payload
+	err = json.Unmarshal(body, &load)
 	if err != nil {
 		sendResponse(w, 400, err.Error())
+		return
+	}
+	if load.After == "" {
+		sendResponse(w, 400, "Empty string")
 		return
 	}
 

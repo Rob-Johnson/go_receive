@@ -51,8 +51,19 @@ func TestMissingJSON(t *testing.T) {
 	}
 }
 
+func TestMissingValue(t *testing.T) {
+	request, _ := http.NewRequest("POST", "/", bytes.NewBufferString("{after:}"))
+
+	response := httptest.NewRecorder()
+	ReceiveHandler(response, request)
+
+	if response.Code != http.StatusBadRequest {
+		t.Errorf("Expected %d method, got %d", http.StatusBadRequest, response.Code)
+	}
+}
+
 func TestValidJSON(t *testing.T) {
-	request, _ := http.NewRequest("POST", "/", bytes.NewBufferString(`{"name":"Galaxy Nexus", "price":"3460.00"}`))
+	request, _ := http.NewRequest("POST", "/", bytes.NewBufferString(`{"after":"477290078a17870ff6e4446089ca664b214a80d3"}`))
 
 	response := httptest.NewRecorder()
 	ReceiveHandler(response, request)
