@@ -4,7 +4,6 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"os"
 	"os/exec"
 	"strconv"
@@ -19,12 +18,7 @@ var (
 )
 
 func RedeployCodebase(commitID string) error {
-	err := checkEnv()
-	if err != nil {
-		return err
-	}
-
-	err = gitFetch()
+	err := gitFetch()
 	if err != nil {
 		return err
 	}
@@ -42,7 +36,7 @@ func RedeployCodebase(commitID string) error {
 	return err
 }
 
-func checkEnv() error {
+func CheckEnv() error {
 	if appDir == "" {
 		return errors.New("APP_DIR env missing")
 	}
@@ -62,7 +56,6 @@ func gitFetch() error {
 
 func gitReset(commitID string) error {
 	resetCmd := exec.Command("git", "reset", "--hard", commitID)
-	log.Print(resetCmd)
 	resetCmd.Dir = appDir
 	err := resetCmd.Run()
 	return err

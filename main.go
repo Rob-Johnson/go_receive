@@ -49,6 +49,11 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = goreceive.CheckEnv()
+	if err != nil {
+		sendResponse(w, 500, fmt.Sprintf("%s", "Problem updating codebase"))
+	}
+
 	err = goreceive.RedeployCodebase(load.After)
 	if err != nil {
 		sendResponse(w, 500, fmt.Sprintf("%s", "Problem updating codebase"))
