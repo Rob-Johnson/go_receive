@@ -21,8 +21,6 @@ func sendResponse(w http.ResponseWriter, status int, data string) {
 
 func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 
-	//not interested if you're not POST'ing
-	//return 405 Method Not Allowed
 	if r.Method != "POST" {
 		sendResponse(w, 405, fmt.Sprintf("Need a POST, not a %s.", r.Method))
 	}
@@ -38,7 +36,6 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//try and convert the json to a Payload struct
 	var load Payload
 	err = json.Unmarshal(body, &load)
 	if err != nil {
