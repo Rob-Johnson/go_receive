@@ -3,13 +3,14 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"github.com/Rob-Johnson/goreceive/deploy"
 	"io/ioutil"
 	"net/http"
 )
 
 //only need the after field from Github's post receive hook
 type Payload struct {
-	after string
+	After string
 }
 
 func sendResponse(w http.ResponseWriter, status int, data string) {
@@ -48,7 +49,10 @@ func ReceiveHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	//TODO: redeploy the codebase here
+	err = goreceive.RedeployCodebase(load.After)
+	if err != nil {
+		sendResponse(w, 500, fmt.Sprintf("%s", "Problem updating codebase"))
+	}
 }
 
 func main() {
