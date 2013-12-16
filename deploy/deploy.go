@@ -47,7 +47,7 @@ func CheckEnv() error {
 }
 
 func gitFetch() error {
-	fetchCmd := exec.Command("git", "fetch", "origin", "master")
+	fetchCmd := exec.Command("git", "fetch")
 	fetchCmd.Dir = appDir
 	err := fetchCmd.Run()
 	return err
